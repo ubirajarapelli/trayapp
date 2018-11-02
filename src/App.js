@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import './App.css';
+
 const API = 'http://demo8346836.mockable.io/trayapp';
 
 class App extends Component {
     constructor(props) {
         super(props);
+
+        this.setTrayValue = this.setTrayValue.bind(this);
 
         this.state = {
             payload: {},
@@ -19,6 +23,14 @@ class App extends Component {
     }
 
     componentDidMount() {
+        window.addEventListener('setTrayValue', this.setTrayValue);
+    }
+
+    componentWillMount() {
+        window.removeEventListener('setTrayValue', this.setTrayValue);
+    }
+
+    setTrayValue() {
         this.setState({isLoading: true});
 
         axios.get(API)
@@ -44,7 +56,7 @@ class App extends Component {
         }
 
         return (
-            <div>
+            <div className="tray-full">
                 <p>{payload.guid}</p>
                 <p>{payload.id}</p>
             </div>
